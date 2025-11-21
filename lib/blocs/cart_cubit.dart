@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../models/produk.dart';
+import '../models/product_model.dart';
 
 /// Simple cart cubit backed by ChangeNotifier.
 ///

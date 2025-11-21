@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../blocs/cart_cubit.dart';
-import '../models/produk.dart';
+import '../models/product_model.dart';
 
-/// A simple page that shows cart totals (total items and total price).
-/// It listens to the provided [CartCubit] for realtime updates.
 class CartSummaryPage extends StatelessWidget {
   final CartCubit cart;
 
@@ -12,16 +10,13 @@ class CartSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cart Summary'),
-      ),
+      appBar: AppBar(title: const Text('Cart Summary')),
       body: AnimatedBuilder(
         animation: cart,
         builder: (context, _) {
           final totalItems = cart.getTotalItems();
           final totalPrice = cart.getTotalPrice();
 
-          // build unique product list
           final List<Produk> uniqueProducts = [];
           for (final p in cart.items) {
             if (!uniqueProducts.any((u) => u.id == p.id)) uniqueProducts.add(p);
@@ -31,7 +26,6 @@ class CartSummaryPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // totals header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -54,12 +48,8 @@ class CartSummaryPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // list of products with qty controls
                 if (uniqueProducts.isEmpty)
-                  const Expanded(
-                    child: Center(child: Text('Cart is empty')),
-                  )
+                  const Expanded(child: Center(child: Text('Cart is empty')))
                 else
                   Expanded(
                     child: ListView.separated(
@@ -79,9 +69,7 @@ class CartSummaryPage extends StatelessWidget {
                             children: [
                               IconButton(
                                 icon: const Icon(Icons.remove_circle_outline),
-                                onPressed: qty > 0
-                                    ? () => cart.updateQuantity(p, qty - 1)
-                                    : null,
+                                onPressed: qty > 0 ? () => cart.updateQuantity(p, qty - 1) : null,
                               ),
                               Text('$qty'),
                               IconButton(
@@ -94,9 +82,7 @@ class CartSummaryPage extends StatelessWidget {
                       },
                     ),
                   ),
-
                 const SizedBox(height: 8),
-                // Checkout button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -122,19 +108,14 @@ class CartSummaryPage extends StatelessWidget {
   Widget _buildThumb(Produk produk) {
     final img = produk.image.trim();
     if (img.isEmpty) {
-      return Container(
-        width: 56,
-        height: 56,
-        color: Colors.grey[200],
-        child: const Icon(Icons.image, color: Colors.black38),
-      );
+      return Container(width: 56, height: 56, color: Colors.grey[200], child: const Icon(Icons.image, color: Colors.black38));
     }
 
     final isNetwork = img.toLowerCase().startsWith('http://') || img.toLowerCase().startsWith('https://');
     if (isNetwork) {
-      return Image.network(img, width: 56, height: 56, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(width:56,height:56,color:Colors.grey[200],child:const Icon(Icons.broken_image)));
+      return Image.network(img, width: 56, height: 56, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(width: 56, height: 56, color: Colors.grey[200], child: const Icon(Icons.broken_image)));
     }
 
-    return Image.asset(img, width: 56, height: 56, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(width:56,height:56,color:Colors.grey[200],child:const Icon(Icons.broken_image)));
+    return Image.asset(img, width: 56, height: 56, fit: BoxFit.cover, errorBuilder: (_, __, ___) => Container(width: 56, height: 56, color: Colors.grey[200], child: const Icon(Icons.broken_image)));
   }
 }

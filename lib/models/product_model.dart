@@ -1,4 +1,4 @@
-// Model Produk
+// Model Produk (moved from produk.dart)
 class Produk {
   final String id;
   final String nama;
@@ -43,6 +43,7 @@ class Produk {
 
   /// Convert this Produk to a Map (String -> dynamic).
   Map<String, dynamic> toMap() => toJson();
+
   /// Create a Produk from a Map (String -> dynamic).
   factory Produk.fromMap(Map<String, dynamic> map) {
     return Produk(
